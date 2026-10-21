@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Okay Rider</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #10151d;
+      color: white;
+    }
+    header {
+      background: #ffc107;
+      color: #111;
+      padding: 22px;
+      text-align: center;
+    }
+    header h1 { margin: 0; }
+    main { max-width: 650px; margin: auto; padding: 18px; }
+    .card {
+      background: #1c2532;
+      border-radius: 14px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    h2 { color: #ffc107; }
+    input, select, button {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+    }
+    button {
+      background: #ffc107;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+    .note { color: #b9c3d0; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏍️ Okay Rider</h1>
+    <p>Ride Free. Ride Smart.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Welcome to Okay Rider</h2>
+      <p>One app for motorcycle drivers and passengers.</p>
+      <label for="role">Choose your role</label>
+      <select id="role">
+        <option value="passenger">Passenger</option>
+        <option value="driver">Driver</option>
+      </select>
+      <input id="name" placeholder="Enter your full name">
+      <input id="phone" placeholder="Mobile number">
+      <input id="referral" placeholder="Referral code (optional)">
+      <button onclick="register()">Continue</button>
+      <p id="message" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>🎁 Referral Program</h2>
+      <p>Proposed bonus: Rs. 2,000 for the referring user and Rs. 2,000 for the referred user.</p>
+      <p class="note">Bonuses require server-side referral verification and approval.</p>
+    </section>
+
+    <section class="card">
+      <h2>💳 Payout Method</h2>
+      <select id="payout">
+        <option>JazzCash</option>
+        <option>Easypaisa</option>
+        <option>Bank Account</option>
+      </select>
+      <input id="account" placeholder="Account holder name">
+      <input id="accountNumber" placeholder="Wallet or bank account number">
+      <button onclick="savePayout()">Save payout details</button>
+      <p id="payoutMessage" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>🏍️ Driver Wallet</h2>
+      <p>Top-ups are handled manually by the admin.</p>
+      <p id="balance">Displayed balance: Rs. 0</p>
+      <p class="note">This is a demo balance, not a real wallet balance.</p>
+    </section>
+
+    <section class="card">
+      <h2>🔐 Admin Access</h2>
+      <p class="note">Admin login must be connected to a secure backend.
+      Do not use a password embedded in frontend code.</p>
+      <input id="adminEmail" type="email" placeholder="Admin email">
+      <input id="adminPassword" type="password" placeholder="Admin password">
+      <button onclick="adminLogin()">Admin Login</button>
+      <p id="adminMessage" aria-live="polite"></p>
+      <div id="adminPanel" class="hidden">
+        <h3>Admin Control Panel (Demo)</h3>
+        <p>Review referral requests and driver top-up requests in the secure backend.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function register() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const role = document.getElementById("role").value;
+
+      if (!name || !phone) {
+        document.getElementById("message").textContent =
+          "Please enter your name and mobile number.";
+        return;
+      }
+
+      document.getElementById("message").textContent =
+        "Demo only: " + name + ", your " + role +
+        " registration needs a secure backend.";
+    }
+
+    function savePayout() {
+      const account = document.getElementById("account").value.trim();
+      const number = document.getElementById("accountNumber").value.trim();
+
+      document.getElementById("payoutMessage").textContent =
+        account && number
+          ? "Demo only: payout details have not been saved to a server."
+          : "Please enter account holder name and account number.";
+    }
+
+    async function adminLogin() {
+      document.getElementById("adminPanel").classList.add("hidden");
+      document.getElementById("adminMessage").textContent =
+        "Admin login is not connected. Configure server-side authentication before enabling access.";
+    }
+  </script>
+</body>
+</html>
