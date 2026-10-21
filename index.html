@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noor Rider</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6f4;color:#222}
+header{background:#087f5b;color:white;padding:20px;text-align:center}
+nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px}
+button{background:#087f5b;color:white;border:0;border-radius:7px;padding:11px;cursor:pointer}
+input,select{width:100%;padding:11px;margin:7px 0;border:1px solid #ccc;border-radius:6px}
+main{max-width:700px;margin:auto;padding:15px}
+.card{background:white;padding:18px;margin:12px 0;border-radius:10px;box-shadow:0 2px 8px #ddd}
+.hidden{display:none}
+h2{color:#087f5b}
+</style>
+</head>
+<body>
+
+<header>
+<h1>NOOR RIDER</h1>
+<p>One App • Driver • Passenger</p>
+</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('passenger')">Passenger</button>
+<button onclick="show('driver')">Driver</button>
+<button onclick="show('referral')">Referral</button>
+<button onclick="adminLogin()">Admin Panel</button>
+</nav>
+
+<main>
+<section id="home" class="card">
+<h2>Welcome to Noor Rider</h2>
+<p>One application for drivers and passengers.</p>
+<p>Referral bonus: Rs. 50 for each eligible participant.</p>
+</section>
+
+<section id="passenger" class="card hidden">
+<h2>Passenger Dashboard</h2>
+<input id="pname" placeholder="Passenger name">
+<input id="pcode" placeholder="Referral code (optional)">
+<button onclick="register('passenger')">Register Passenger</button>
+<p id="pmsg"></p>
+</section>
+
+<section id="driver" class="card hidden">
+<h2>Driver Dashboard</h2>
+<input id="dname" placeholder="Driver name">
+<input id="dcode" placeholder="Referral code (optional)">
+<button onclick="register('driver')">Register Driver</button>
+<h3>Wallet</h3>
+<p>Balance: Rs. <span id="balance">0</span></p>
+<p>Manual top-up must be added by an authorized admin.</p>
+<h3>Withdrawal Request</h3>
+<input id="withdrawAmount" type="number" min="1" placeholder="Amount in Rs.">
+<select id="method">
+<option>JazzCash</option>
+<option>Easypaisa</option>
+<option>Bank Account</option>
+</select>
+<input id="account" placeholder="Your payment account details">
+<button onclick="withdraw()">Request Withdrawal</button>
+<p id="wmsg"></p>
+</section>
+
+<section id="referral" class="card hidden">
+<h2>Referral Program</h2>
+<p>Referral reward: Rs. 50 each for the eligible referrer and referred user.</p>
+<p>Your referral code: <strong id="mycode">Register first</strong></p>
+<button onclick="copyReferral()">Copy Referral Code</button>
+<p id="rmsg"></p>
+</section>
+
+<section id="admin" class="card hidden">
+<h2>Admin Panel</h2>
+<p><strong>Demo interface only.</strong> Real admin security requires a protected backend.</p>
+<h3>Manual Driver Top-Up</h3>
+<input id="topupUser" placeholder="Driver account ID">
+<input id="topupAmount" type="number" min="1" placeholder="Amount in Rs.">
+<button onclick="topup()">Demo Top-Up</button>
+<h3>Referral Management</h3>
+<p>Referral records and bonus approvals require a database and secure backend.</p>
+<h3>Withdrawal Requests</h3>
+<div id="requests">No requests yet.</div>
+</section>
+</main>
+
+<script>
+function show(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+}
+function register(role){
+const name=document.getElementById(role==='driver'?'dname':'pname').value.trim();
+if(!name){alert('Please enter your name');return;}
+const code=role.toUpperCase()+Math.random().toString(36).slice(2,8).toUpperCase();
+document.getElementById('mycode').textContent=code;
+document.getElementById(role==='driver'?'dname':'pname').value=name;
+document.getElementById(role==='driver'?'wmsg':'pmsg').textContent=
+'Demo registration only. Secure account registration is not configured.';
+}
+function copyReferral(){
+const code=document.getElementById('mycode').textContent;
+if(code==='Register first'){alert('Register first');return;}
+if(navigator.clipboard)navigator.clipboard.writeText(code).then(()=>alert('Code copied'));
+else alert('Your referral code is: '+code);
+}
+function adminLogin(){
+const password=prompt('Admin password');
+if(password===null)return;
+alert('Admin login is not configured. Do not use this demo for real payments or admin actions.');
+}
+function withdraw(){
+const amount=Number(document.getElementById('withdrawAmount').value);
+if(amount<=0){alert('Enter a valid amount');return;}
+document.getElementById('wmsg').textContent=
+'Demo only: withdrawal is not submitted. Backend and wallet verification are required.';
+}
+function topup(){
+alert('Demo only: no wallet balance has been credited. A secure admin backend is required.');
+}
+</script>
+</body>
+  </html>
