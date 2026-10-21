@@ -1,128 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Noor Rider</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f6f4;color:#222}
-header{background:#087f5b;color:white;padding:20px;text-align:center}
-nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px}
-button{background:#087f5b;color:white;border:0;border-radius:7px;padding:11px;cursor:pointer}
-input,select{width:100%;padding:11px;margin:7px 0;border:1px solid #ccc;border-radius:6px}
-main{max-width:700px;margin:auto;padding:15px}
-.card{background:white;padding:18px;margin:12px 0;border-radius:10px;box-shadow:0 2px 8px #ddd}
-.hidden{display:none}
-h2{color:#087f5b}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noor Rider</title>
+  <style>
+    /* Main app styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f5f9;
+      margin: 0;
+      padding: 20px;
+      color: #172033;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .header {
+      background: #087443;
+      color: white;
+      padding: 22px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #00000010;
+    }
+    input, select, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 7px 0;
+      border-radius: 7px;
+      border: 1px solid #ccd3dd;
+    }
+    button {
+      background: #087443;
+      color: white;
+      border: 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .note {
+      color: #64748b;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
+<div class="container">
 
-<header>
-<h1>NOOR RIDER</h1>
-<p>One App • Driver • Passenger</p>
-</header>
+  <div class="header">
+    <h1>Noor Rider</h1>
+    <p>Driver & Passenger App</p>
+  </div>
 
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('passenger')">Passenger</button>
-<button onclick="show('driver')">Driver</button>
-<button onclick="show('referral')">Referral</button>
-<button onclick="adminLogin()">Admin Panel</button>
-</nav>
+  <!-- Users select their role in the same app -->
+  <div class="card">
+    <h2>Choose Account</h2>
+    <select id="role">
+      <option value="passenger">Passenger</option>
+      <option value="driver">Driver</option>
+    </select>
+    <button onclick="showRole()">Continue</button>
+    <p id="roleMessage"></p>
+  </div>
 
-<main>
-<section id="home" class="card">
-<h2>Welcome to Noor Rider</h2>
-<p>One application for drivers and passengers.</p>
-<p>Referral bonus: Rs. 50 for each eligible participant.</p>
-</section>
+  <!-- Referral bonus information -->
+  <div class="card">
+    <h2>Referral Program</h2>
+    <p>Bonus: Rs. 2,000 per eligible driver referral.</p>
+    <p>Bonus: Rs. 2,000 per eligible passenger referral.</p>
+    <p class="note">
+      Referral rewards must be verified and approved by an
+      authorized admin on the server before being credited.
+    </p>
+  </div>
 
-<section id="passenger" class="card hidden">
-<h2>Passenger Dashboard</h2>
-<input id="pname" placeholder="Passenger name">
-<input id="pcode" placeholder="Referral code (optional)">
-<button onclick="register('passenger')">Register Passenger</button>
-<p id="pmsg"></p>
-</section>
+  <!-- Driver wallet demonstration -->
+  <div class="card">
+    <h2>Driver Wallet</h2>
+    <p>Balance: <strong id="balance">Rs. 0</strong></p>
+    <p class="note">
+      Wallet balance must come from the secure server.
+      Drivers cannot credit their own accounts.
+    </p>
+    <button onclick="requestTopUp()">
+      Request Manual Top-Up
+    </button>
+    <p id="walletMessage"></p>
+  </div>
 
-<section id="driver" class="card hidden">
-<h2>Driver Dashboard</h2>
-<input id="dname" placeholder="Driver name">
-<input id="dcode" placeholder="Referral code (optional)">
-<button onclick="register('driver')">Register Driver</button>
-<h3>Wallet</h3>
-<p>Balance: Rs. <span id="balance">0</span></p>
-<p>Manual top-up must be added by an authorized admin.</p>
-<h3>Withdrawal Request</h3>
-<input id="withdrawAmount" type="number" min="1" placeholder="Amount in Rs.">
-<select id="method">
-<option>JazzCash</option>
-<option>Easypaisa</option>
-<option>Bank Account</option>
-</select>
-<input id="account" placeholder="Your payment account details">
-<button onclick="withdraw()">Request Withdrawal</button>
-<p id="wmsg"></p>
-</section>
+  <!-- Withdrawal request -->
+  <div class="card">
+    <h2>Request Withdrawal</h2>
+    <input id="amount" type="number"
+      min="1" placeholder="Amount in Rs.">
+    <select id="method">
+      <option value="JazzCash">JazzCash</option>
+      <option value="Easypaisa">Easypaisa</option>
+      <option value="Bank">Bank Account</option>
+    </select>
+    <input id="account"
+      placeholder="Account number / IBAN">
+    <button onclick="requestWithdrawal()">
+      Submit Withdrawal Request
+    </button>
+    <p id="withdrawMessage"></p>
+    <p class="note">
+      Demo only: no actual money is transferred.
+    </p>
+  </div>
 
-<section id="referral" class="card hidden">
-<h2>Referral Program</h2>
-<p>Referral reward: Rs. 50 each for the eligible referrer and referred user.</p>
-<p>Your referral code: <strong id="mycode">Register first</strong></p>
-<button onclick="copyReferral()">Copy Referral Code</button>
-<p id="rmsg"></p>
-</section>
+  <!-- Admin panel must be protected by server-side authentication.
+       Never rely on hiding this HTML section for security. -->
+  <div class="card">
+    <h2>Admin Panel</h2>
+    <p class="note">
+      Admin access, referral approvals, top-ups and payouts
+      must be implemented on a secure backend.
+    </p>
+    <p>Pending requests: View after secure admin login.</p>
+  </div>
 
-<section id="admin" class="card hidden">
-<h2>Admin Panel</h2>
-<p><strong>Demo interface only.</strong> Real admin security requires a protected backend.</p>
-<h3>Manual Driver Top-Up</h3>
-<input id="topupUser" placeholder="Driver account ID">
-<input id="topupAmount" type="number" min="1" placeholder="Amount in Rs.">
-<button onclick="topup()">Demo Top-Up</button>
-<h3>Referral Management</h3>
-<p>Referral records and bonus approvals require a database and secure backend.</p>
-<h3>Withdrawal Requests</h3>
-<div id="requests">No requests yet.</div>
-</section>
-</main>
+</div>
 
 <script>
-function show(id){
-document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-}
-function register(role){
-const name=document.getElementById(role==='driver'?'dname':'pname').value.trim();
-if(!name){alert('Please enter your name');return;}
-const code=role.toUpperCase()+Math.random().toString(36).slice(2,8).toUpperCase();
-document.getElementById('mycode').textContent=code;
-document.getElementById(role==='driver'?'dname':'pname').value=name;
-document.getElementById(role==='driver'?'wmsg':'pmsg').textContent=
-'Demo registration only. Secure account registration is not configured.';
-}
-function copyReferral(){
-const code=document.getElementById('mycode').textContent;
-if(code==='Register first'){alert('Register first');return;}
-if(navigator.clipboard)navigator.clipboard.writeText(code).then(()=>alert('Code copied'));
-else alert('Your referral code is: '+code);
-}
-function adminLogin(){
-const password=prompt('Admin password');
-if(password===null)return;
-alert('Admin login is not configured. Do not use this demo for real payments or admin actions.');
-}
-function withdraw(){
-const amount=Number(document.getElementById('withdrawAmount').value);
-if(amount<=0){alert('Enter a valid amount');return;}
-document.getElementById('wmsg').textContent=
-'Demo only: withdrawal is not submitted. Backend and wallet verification are required.';
-}
-function topup(){
-alert('Demo only: no wallet balance has been credited. A secure admin backend is required.');
-}
+  // DEMO ONLY: connect these actions to authenticated API endpoints.
+  function showRole() {
+    const role = document.getElementById("role").value;
+    document.getElementById("roleMessage").textContent =
+      "Selected account: " + role +
+      ". Connect login and role permissions to the backend.";
+  }
+
+  function requestTopUp() {
+    // Backend should create a pending top-up request.
+    document.getElementById("walletMessage").textContent =
+      "Demo request only. Connect the driver account and server.";
+  }
+
+  function requestWithdrawal() {
+    const amount = Number(document.getElementById("amount").value);
+    const method = document.getElementById("method").value;
+    const account = document.getElementById("account").value.trim();
+
+    if (!Number.isFinite(amount) || amount <= 0 || !account) {
+      document.getElementById("withdrawMessage").textContent =
+        "Enter a valid amount and payment account.";
+      return;
+    }
+
+    // Production server must authenticate the user, check the
+    // available balance, prevent duplicate requests and record
+    // the payout as pending. Never trust amounts from the browser.
+    document.getElementById("withdrawMessage").textContent =
+      "Demo only: " + method +
+      " withdrawal request needs backend integration.";
+  }
 </script>
 </body>
-  </html>
+                  </html>
+  
